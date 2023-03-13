@@ -1,12 +1,13 @@
-import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import networkx as nx
-from simsnn.core.detectors import Raster, Multimeter
+import numpy as np
+
+from simsnn.core.detectors import Multimeter, Raster
 
 
 class Simulator:
-    """Simulator
+    """Simulator.
 
     Parameters
     ----------
@@ -24,7 +25,7 @@ class Simulator:
             self.network.update_rng(np.random.RandomState(seed))
 
     def run(self, steps, plotting=False):
-        """Run the simulator
+        """Run the simulator.
 
         Parameters
         ----------
@@ -77,16 +78,22 @@ class Simulator:
             fig.axes[1].matshow(rasterdata.T, cmap="gray", aspect="auto")
             fig.axes[1].set_xticks(np.arange(-0.5, steps, 1), minor=True)
             fig.axes[1].set_yticks(np.arange(-0.5, ntd, 1), minor=True)
-            fig.axes[1].grid(which="minor", color="gray", linestyle="-", linewidth=2)
+            fig.axes[1].grid(
+                which="minor", color="gray", linestyle="-", linewidth=2
+            )
             fig.axes[1].xaxis.set_major_locator(ticker.MultipleLocator(1))
             fig.axes[1].set_yticks(np.arange(0, ntd, 1))
             fig.axes[1].set_yticklabels([t.ID for t in self.raster.targets])
 
         for i in range(nvd):
             fig.axes[i + overhead].plot(multimeterdata[:, i])
-            fig.axes[i + overhead].set_ylim(top=(max(multimeterdata.T[i]) + 0.5))
+            fig.axes[i + overhead].set_ylim(
+                top=(max(multimeterdata.T[i]) + 0.5)
+            )
             fig.axes[i + overhead].set_ylabel(self.multimeter.targets[i].ID)
             fig.axes[i + overhead].grid(b=None, which="major")
-            fig.axes[i + overhead].xaxis.set_major_locator(ticker.MultipleLocator(1))
+            fig.axes[i + overhead].xaxis.set_major_locator(
+                ticker.MultipleLocator(1)
+            )
 
         plt.show()

@@ -1,11 +1,11 @@
 import networkx as nx
 
-from simsnn.core.nodes import LIF, InputTrain, RandomSpiker
 from simsnn.core.connections import Synapse
+from simsnn.core.nodes import LIF, InputTrain, RandomSpiker
 
 
 class Network:
-    """Network containing a list of nodes and synapses
+    """Network containing a list of nodes and synapses.
 
     Parameters
     ----------
@@ -64,7 +64,9 @@ class Network:
         self.nodes.append(node)
         return node
 
-    def createSynapse(self, pre, post, w=1.0, d=1, ID=None, increment_count=True):
+    def createSynapse(
+        self, pre, post, w=1.0, d=1, ID=None, increment_count=True
+    ):
         self.graph.add_edge(pre.ID, post.ID)
         synapse = Synapse(pre, post, w, d, ID, increment_count)
         self.synapses.append(synapse)

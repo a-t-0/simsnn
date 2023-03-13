@@ -9,4 +9,3 @@ dependencies:
   - pip=22
   - pip:
     - jupyterlab==3.1.10
-

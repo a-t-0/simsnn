@@ -6,7 +6,7 @@ neurons
 
 
 class AbstractNeuron:
-    """Abstract class for a neuron
+    """Abstract class for a neuron.
 
     Attributes
     ----------
@@ -28,7 +28,7 @@ class AbstractNeuron:
 
 
 class LIF(AbstractNeuron):
-    """Leaky integrate-and-fire based on the Sandia model
+    """Leaky integrate-and-fire based on the Sandia model.
 
     Parameters
     ----------
@@ -159,7 +159,7 @@ Generators
 
 
 class InputTrain(AbstractNeuron):
-    """Generator that outputs a given train of events
+    """Generator that outputs a given train of events.
 
     Parameters
     ----------
@@ -243,7 +243,7 @@ class InputTrain(AbstractNeuron):
 
 
 class RandomSpiker(AbstractNeuron):
-    """Generator that fires with a given probability at each time step
+    """Generator that fires with a given probability at each time step.
 
     Parameters
     ----------
@@ -257,7 +257,9 @@ class RandomSpiker(AbstractNeuron):
 
     count = 0
 
-    def __init__(self, p, amplitude=1, rng=None, ID=None, increment_count=True):
+    def __init__(
+        self, p, amplitude=1, rng=None, ID=None, increment_count=True
+    ):
         AbstractNeuron.__init__(self, amplitude)
         self.p = p
         self.rng = rng if rng is not None else np.random.default_rng()

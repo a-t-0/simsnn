@@ -1,11 +1,16 @@
 import argparse
+
 from simsnn.examples import circuit
 
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "-d", default=5, metavar="N", type=int, help="The amount of steps to simulate"
+        "-d",
+        default=5,
+        metavar="N",
+        type=int,
+        help="The amount of steps to simulate",
     )
     parser.add_argument(
         "-f",

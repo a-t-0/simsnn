@@ -11,7 +11,9 @@ class Raster:
         self.index = 0
 
     def step(self):
-        self.spikes[self.index, :] = [target.out > 0 for target in self.targets]
+        self.spikes[self.index, :] = [
+            target.out > 0 for target in self.targets
+        ]
         self.index += 1
 
     def get_measurements(self):

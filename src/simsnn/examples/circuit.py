@@ -3,14 +3,15 @@ from simsnn.core.simulators import Simulator
 
 
 def run(duration=10):
-
     # Create the network and the simulator object
     net = Network()
     sim = Simulator(net)
 
     # Create a programmed neuron, that spikes on times 1 and 3,
     # does not repeat it's programming and has the ID "pn".
-    programmed_neuron = net.createInputTrain(train=[0, 1, 0, 1], loop=False, ID="pn")
+    programmed_neuron = net.createInputTrain(
+        train=[0, 1, 0, 1], loop=False, ID="pn"
+    )
 
     # Create a LIF neuron, with a membrane voltage threshold of 1,
     # a post spike reset value of 0 and no voltage decay (m=1).
@@ -18,7 +19,9 @@ def run(duration=10):
 
     # Create a Synapse, between the programmed neuron and the LIF neuron,
     # with a voltage weight of 1 and a delay of 1.
-    net.createSynapse(pre=programmed_neuron, post=lif_neuron, ID="pn-ln", w=1, d=1)
+    net.createSynapse(
+        pre=programmed_neuron, post=lif_neuron, ID="pn-ln", w=1, d=1
+    )
 
     # Add all neurons to the raster
     sim.raster.addTarget([programmed_neuron, lif_neuron])
