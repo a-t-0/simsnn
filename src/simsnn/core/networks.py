@@ -22,6 +22,7 @@ class Network:
 
     def createLIF(
         self,
+        bias=0,
         m=1.0,
         V_init=0,
         V_reset=0,
@@ -33,10 +34,13 @@ class Network:
         rng=None,
         ID=None,
         increment_count=True,
+        name=None,
+        du=None,
     ):
         self.graph.add_node(ID)
         node = LIF(
             m,
+            bias,
             V_init,
             V_reset,
             V_min,
@@ -44,9 +48,11 @@ class Network:
             amplitude,
             I_e,
             noise,
-            rng,
-            ID,
-            increment_count,
+            rng=rng,
+            ID=ID,
+            increment_count=increment_count,
+            name=name,
+            du=du,
         )
         self.nodes.append(node)
         return node

@@ -3,7 +3,7 @@ import unittest
 
 from typeguard import typechecked
 
-from src.pythontemplate.adder import add_two
+from src.simsnn.adder import add_two
 
 
 class Test_adder(unittest.TestCase):

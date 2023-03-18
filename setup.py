@@ -1,4 +1,4 @@
-"""Packaging logic for pythontemplate."""
+"""Packaging logic for simsnn."""
 from __future__ import annotations
 
 import os

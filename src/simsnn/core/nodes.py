@@ -1,8 +1,6 @@
-import numpy as np
+"""Neurons."""
 
-"""
-neurons
-"""
+import numpy as np
 
 
 class AbstractNeuron:
@@ -56,6 +54,7 @@ class LIF(AbstractNeuron):
     def __init__(
         self,
         m=1.0,
+        bias=0,
         V_init=0,
         V_reset=0,
         V_min=0,
@@ -66,9 +65,12 @@ class LIF(AbstractNeuron):
         rng=None,
         ID=None,
         increment_count=True,
+        name=None,
+        du=None,
     ):
         AbstractNeuron.__init__(self, amplitude)
         self.m = m
+        self.bias = bias
         self.V = V_init
         self.V_reset = V_reset
         self.V_min = V_min
@@ -77,20 +79,25 @@ class LIF(AbstractNeuron):
         self.I = I_e
         self.rng = rng if rng is not None else np.random.RandomState()
         self.noise = noise
-
+        self.du = du
+        
         if ID is None:
             self.ID = LIF.count + 1
         else:
             self.ID = ID
         if increment_count:
             LIF.count += 1
+        self.name=name
 
     def step(self):
-        self.V = self.V * self.m + self.I  # update V
+        self.V = self.V * self.m + self.I + self.bias  # update V
         if self.noise > 0:
             self.V += self.rng.normal(scale=self.noise)  # add noise
         self.V = max(self.V_min, self.V)
-        self.I = self.I_e  # reset I with I_e
+        if self.du is None:
+            self.I = self.I_e # reset I with I_e
+        else:
+            self.I = self.I * (1-self.du)
         if self.V >= self.thr:  # check for spike
             self.V = self.V_reset
             self.out = self.amplitude
