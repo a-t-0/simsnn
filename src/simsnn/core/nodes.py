@@ -80,14 +80,14 @@ class LIF(AbstractNeuron):
         self.rng = rng if rng is not None else np.random.RandomState()
         self.noise = noise
         self.du = du
-        
+
         if ID is None:
             self.ID = LIF.count + 1
         else:
             self.ID = ID
         if increment_count:
             LIF.count += 1
-        self.name=name
+        self.name = name
 
     def step(self):
         self.V = self.V * self.m + self.I + self.bias  # update V
@@ -95,9 +95,9 @@ class LIF(AbstractNeuron):
             self.V += self.rng.normal(scale=self.noise)  # add noise
         self.V = max(self.V_min, self.V)
         if self.du is None:
-            self.I = self.I_e # reset I with I_e
+            self.I = self.I_e  # reset I with I_e
         else:
-            self.I = self.I * (1-self.du)
+            self.I = self.I * (1 - self.du)
         if self.V >= self.thr:  # check for spike
             self.V = self.V_reset
             self.out = self.amplitude
