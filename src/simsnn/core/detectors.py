@@ -8,9 +8,14 @@ class Raster:
         self.targets = targets if targets is not None else []
         self.ID = ID
 
-    def initialize(self, steps):
-        self.spikes = np.zeros((steps, len(self.targets)), dtype=bool)
-        self.index = 0
+    def initialize(self, steps,extend_raster: Optional[bool]=False):
+        if extend_raster and "spikes" in self.__dict__.keys():
+            self.spikes = np.append(
+                arr=self.spikes, values=np.zeros((steps, len(self.targets)), dtype=bool), axis=0
+            )
+        else:
+            self.spikes = np.zeros((steps, len(self.targets)), dtype=bool)
+            self.index = 0
 
     def step(self):
         self.spikes[self.index, :] = [

@@ -27,7 +27,7 @@ class Simulator:
             self.network.update_rng(np.random.RandomState(seed))
 
     def run(
-        self, steps, plotting=False, extend_multimeter: Optional[bool] = False
+        self, steps, plotting=False, extend_multimeter: Optional[bool] = False, extend_raster: Optional[bool] = False
     ):
         """Run the simulator.
 
@@ -39,7 +39,7 @@ class Simulator:
             Instead of creating a new Multimeter, preserve and extend it for
             <steps> steps.
         """
-        self.raster.initialize(steps)
+        self.raster.initialize(steps,extend_raster=extend_raster)
         self.multimeter.initialize(steps, extend_multimeter=extend_multimeter)
 
         for _ in range(steps):
