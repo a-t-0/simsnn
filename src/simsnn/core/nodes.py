@@ -1,5 +1,7 @@
 """Neurons."""
 
+from typing import Optional, Tuple
+
 import numpy as np
 
 
@@ -47,6 +49,8 @@ class LIF(AbstractNeuron):
         to add noise to the membrane voltage at each step
     rng : np.random.RandomState
         Random generator for the noise
+    pos : Optional[Tuple[float, float]]
+        xy position of node in visualisation.
     """
 
     count = 0
@@ -67,6 +71,8 @@ class LIF(AbstractNeuron):
         increment_count=True,
         name=None,
         du=None,
+        pos: Optional[Tuple[float, float]] = None,
+        spike_only_if_thr_exceeded: Optional[bool] = False,
     ):
         AbstractNeuron.__init__(self, amplitude)
         self.m = m
@@ -80,6 +86,8 @@ class LIF(AbstractNeuron):
         self.rng = rng if rng is not None else np.random.RandomState()
         self.noise = noise
         self.du = du
+        self.pos = pos
+        self.spike_only_if_thr_exceeded = spike_only_if_thr_exceeded
 
         if ID is None:
             self.ID = LIF.count + 1
@@ -98,9 +106,13 @@ class LIF(AbstractNeuron):
             self.I = self.I_e  # reset I with I_e
         else:
             self.I = self.I * (1 - self.du)
-        if self.V >= self.thr:  # check for spike
-            self.V = self.V_reset
-            self.out = self.amplitude
+
+        # By default Spike if threshold is reached
+        if self.V >= self.thr:
+            # Allow spike only if the threshold is exceeded.
+            if not self.spike_only_if_thr_exceeded or self.V > self.thr:
+                self.V = self.V_reset
+                self.out = self.amplitude
         else:
             self.out = 0
 
@@ -160,9 +172,7 @@ class LIF(AbstractNeuron):
         print(f"noise ={self. noise}\n")
 
 
-"""
-Generators
-"""
+# Generators
 
 
 class InputTrain(AbstractNeuron):
@@ -219,7 +229,7 @@ class InputTrain(AbstractNeuron):
         )
 
 
-'''class PoissonGenerator(AbstractNeuron):
+class PoissonGenerator(AbstractNeuron):
     """Generator that fires with Poisson statistics, i.e. exponentially
     distributed interspike intervals.
 
@@ -241,12 +251,11 @@ class InputTrain(AbstractNeuron):
     def step(self):
         self.V = 0
         if self.I > 0:
-            while (-np.log(1-self.rng.rand()) / self.I) < 1:
+            while (-np.log(1 - self.rng.rand()) / self.I) < 1:
                 self.V += 1
 
         self.out = self.V * self.amplitude
         self.I = self.I_e
-'''
 
 
 class RandomSpiker(AbstractNeuron):

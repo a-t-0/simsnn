@@ -1,3 +1,5 @@
+from typing import Optional, Tuple
+
 import networkx as nx
 
 from simsnn.core.connections import Synapse
@@ -36,6 +38,8 @@ class Network:
         increment_count=True,
         name=None,
         du=None,
+        pos: Optional[Tuple[float, float]] = None,
+        spike_only_if_thr_exceeded: Optional[bool] = False,
     ):
         self.graph.add_node(ID)
         node = LIF(
@@ -53,6 +57,8 @@ class Network:
             increment_count=increment_count,
             name=name,
             du=du,
+            pos=pos,
+            spike_only_if_thr_exceeded=spike_only_if_thr_exceeded,
         )
         self.nodes.append(node)
         return node

@@ -1,3 +1,5 @@
+from typing import Optional
+
 import numpy as np
 
 
@@ -57,9 +59,14 @@ class Multimeter:
         self.targets = targets if targets is not None else []
         self.ID = ID
 
-    def initialize(self, steps):
-        self.V = np.zeros((steps, len(self.targets)))
-        self.index = 0
+    def initialize(self, steps, extend_multimeter: Optional[bool]):
+        if extend_multimeter and "V" in self.__dict__.keys():
+            self.V = np.append(
+                arr=self.V, values=np.zeros((steps, len(self.targets))), axis=0
+            )
+        else:
+            self.V = np.zeros((steps, len(self.targets)))
+            self.index = 0
 
     def step(self):
         self.V[self.index, :] = [target.V for target in self.targets]

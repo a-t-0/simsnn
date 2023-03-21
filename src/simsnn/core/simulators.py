@@ -1,3 +1,5 @@
+from typing import Optional
+
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import networkx as nx
@@ -24,16 +26,21 @@ class Simulator:
         if seed != None:
             self.network.update_rng(np.random.RandomState(seed))
 
-    def run(self, steps, plotting=False):
+    def run(
+        self, steps, plotting=False, extend_multimeter: Optional[bool] = False
+    ):
         """Run the simulator.
 
         Parameters
         ----------
         steps : int
             Number of steps to simulate
+        extend_multimeter : Optional[bool]
+            Instead of creating a new Multimeter, preserve and extend it for
+            <steps> steps.
         """
         self.raster.initialize(steps)
-        self.multimeter.initialize(steps)
+        self.multimeter.initialize(steps, extend_multimeter=extend_multimeter)
 
         for _ in range(steps):
             self.network.step()
